@@ -57,8 +57,7 @@ namespace HexBot
                         select h.NE.Y).Min();
              * */
 
-            //Not read to start the journey yet.
-            BeginJourney();
+            
         }
 
         public int UpJump { get; private set; }
@@ -75,16 +74,12 @@ namespace HexBot
                 CompletedJourney(this, e);
             }
         }
-        
-        
+              
         private void SetBaseRobot(int upjump, int downjump, int vision)
         {
             this.UpJump = upjump;
             this.DownJump = downjump;
             this.Vision = vision;
         }
-
-        
-       
     }
 }
