@@ -38,12 +38,17 @@ namespace HexBot
 
         public Hexagon CurrentHexagon { get; private set; }
 
-        public Robot(int upjump, int downjump, int vision, float toprowYvalue,Hexagon startingHex)
+        public void SetCurrentHexagon(Hexagon currenthex)
+        {
+            this.CurrentHexagon = currenthex;
+        }
+
+        public Robot(int upjump, int downjump, int vision, float toprowYvalue)
         {
             SetBaseRobot(upjump, downjump, vision);
             
             
-            this.CurrentHex = startingHex;
+            //this.CurrentHex = startingHex;
             toprowY = toprowYvalue;
 
             //What do we do with toprowY?
@@ -58,7 +63,7 @@ namespace HexBot
         public int DownJump { get; private set; }
         public int Vision { get; private set; }
         
-        public Hexagon CurrentHex { get; private set; }
+
         public delegate void CompletedJourneyHandler(object sender, CompletedJourneyEventArgs e);
         public event CompletedJourneyHandler CompletedJourney;
         protected virtual void OnCompletedJourney(CompletedJourneyEventArgs e)
@@ -82,7 +87,7 @@ namespace HexBot
             Move();
         }
         private void Move(){
-            if (this.CurrentHex.NE.Y == toprowY)
+            if (this.CurrentHexagon.NE.Y == toprowY)
             {
                 string temp = "";
             }
@@ -96,28 +101,34 @@ namespace HexBot
             }
         }
 
-       
-        private int AdjacentMovesAllowed(Hexagon h)
-        {
-            int result = 0;
-            foreach (HexSide hs in h.HexSides)
-            {
-                var aHex = from h1 in this.HexWorld
-                           where h1.HexSides.Contains(hs)
-                           && !h1.Equals(h)
-                           select h1;
+        /*
+         * This stuff needs to be in the Hexworld class.
+         * The robot checks the world to see if the move is available.
+         * The world gives feedback if it is or is not and the reason why.
+         * Then of the possible moves, the bot decides what to do.
+         * 
+         private int AdjacentMovesAllowed(Hexagon h)
+         {
+             int result = 0;
+             foreach (HexSide hs in h.HexSides)
+             {
+                 var aHex = from h1 in this.HexWorld
+                            where h1.HexSides.Contains(hs)
+                            && !h1.Equals(h)
+                            select h1;
 
-                if (aHex.Count() == 1)
-                {
-                    Hexagon testHex = aHex.First();
-                    MoveResult mr = (HexUtils.isMoveAllowed(h, testHex, this.UpJump, this.DownJump));
-                    if (mr.MoveResultStatus == MoveResult.eMoveResult.Success)
-                    {
-                        result++;
-                    }
-                }
-            }
-            return result;
-        }
+                 if (aHex.Count() == 1)
+                 {
+                     Hexagon testHex = aHex.First();
+                     MoveResult mr = (HexUtils.isMoveAllowed(h, testHex, this.UpJump, this.DownJump));
+                     if (mr.MoveResultStatus == MoveResult.eMoveResult.Success)
+                     {
+                         result++;
+                     }
+                 }
+             }
+             return result;
+         }
+         * */
     }
 }

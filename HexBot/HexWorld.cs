@@ -30,6 +30,7 @@ namespace HexBot
             {
                 this.Robots = new List<Robot>();
             }
+            robot.SetCurrentHexagon(GetStartHexOnBottomRow());
             this.Robots.Add(robot);
             
         }
