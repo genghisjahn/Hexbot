@@ -113,30 +113,30 @@ namespace HexBot
                       select hx).FirstOrDefault();
            
             hexworld.Tiles.ForEach(h => h.Selected = false);
-            var hex = (from h in hexworld.Tiles
+            var hextarget = (from h in hexworld.Tiles
                        where h.NW.X <= e.X && h.NE.X >= e.X
                        && h.NW.Y <= e.Y && h.SW.Y >= e.Y
                        select h).FirstOrDefault();
 
             MoveResult moveresult = new MoveResult(MoveResult.eMoveResult.DNE, "");
 
-            if (hex != null)
+            if (hextarget != null)
             {
-                moveresult = HexUtils.isMoveAllowed(hexselected, hex,jumpup,jumpdown);
+                moveresult = HexUtils.isMoveAllowed(hexselected, hextarget,jumpup,jumpdown);
                 if (moveresult.MoveResultStatus== MoveResult.eMoveResult.Success)
                 {
                     if (hexselected != null)
                     {
                         hexselected.Selected = false;
                     }
-                    hex.Selected = true;
+                    hextarget.Selected = true;
                 }
                 else
                 {
                     if (hexselected != null)
                     {
                         hexselected.Selected = true;
-                        hex.Selected = false;
+                        hextarget.Selected = false;
                     }
                 }
                
