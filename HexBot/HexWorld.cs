@@ -8,22 +8,31 @@ namespace HexBot
 {
     public class HexWorld
     {
+        #region "Private variables"
         private Random rand = new Random((int)DateTime.Now.Ticks);
-        
+        #endregion
+
+        #region "Public Properties"
         public string WorldName { get; private set; }
         public List<Hexagon> Tiles { get; private set; }
         public List<Robot> Robots { get; private set; }
-        public HexWorld(string worldname,List<Hexagon> tiles)
+        #endregion
+
+        #region "constructors"
+        public HexWorld(string worldname, List<Hexagon> tiles)
         {
             this.WorldName = worldname;
             this.Tiles = tiles;
-            
+
         }
         public HexWorld(string worldname)
         {
             this.WorldName = worldname;
             BuildWorld();
         }
+        #endregion
+
+        #region "Public Methods"
         public void AddRobot(Robot robot)
         {
             if (this.Robots == null)
@@ -32,8 +41,19 @@ namespace HexBot
             }
             robot.SetCurrentHexagon(GetStartHexOnBottomRow(robot));
             this.Robots.Add(robot);
-            
+
         }
+        public MoveResult TryMove(MoveAttempt attemp,Robot robot)
+        {
+            MoveResult result;
+
+
+            result = new MoveResult(MoveResult.eMoveResult.DNE, "This isn't working yet.");
+            return result;
+        }
+        #endregion
+
+        #region "Private Methods"
         private Hexagon GetStartHexOnBottomRow(Robot robot)
         {
             Hexagon result = new Hexagon();
@@ -52,7 +72,7 @@ namespace HexBot
 
             foreach (Hexagon h in bottomRow)
             {
-                int moves = AdjacentMovesAllowed(h,robot);
+                int moves = AdjacentMovesAllowed(h, robot);
                 if (moves > 0)
                 {
                     bool updateMostMoves = false;
@@ -74,7 +94,7 @@ namespace HexBot
             if (BestHexes.Count() == 1)
             {
                 result = BestHexes.First();
-                
+
                 //this.CurrentHex.Selected = true;
             }
             else if (BestHexes.Count() > 1)
@@ -86,7 +106,7 @@ namespace HexBot
             }
             return result;
         }
-        private int AdjacentMovesAllowed(Hexagon h,Robot robot)
+        private int AdjacentMovesAllowed(Hexagon h, Robot robot)
         {
             int result = 0;
             foreach (HexSide hs in h.HexSides)
@@ -108,7 +128,6 @@ namespace HexBot
             }
             return result;
         }
-
         private void BuildWorld()
         {
             int side = 20;
@@ -161,5 +180,6 @@ namespace HexBot
             hMod = rand.Next(low, high + 1);
             return hMod;
         }
+        #endregion
     }
 }
