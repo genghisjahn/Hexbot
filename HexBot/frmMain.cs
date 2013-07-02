@@ -14,7 +14,8 @@ namespace HexBot
     {
         List<Hexagon> hexagons = new List<Hexagon>();
 
-        Random rand = new Random((int)DateTime.Now.Ticks);
+        HexWorld hexworld = new HexWorld("Hex world.");
+        
         int jumpup = 2;
         int jumpdown = 3;
 
@@ -25,28 +26,15 @@ namespace HexBot
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            BuildHexagons();
-            Robot robot = new Robot(2, 3, 2, hexagons);
+            float toprowy = (from h in hexworld.Tiles
+                             select h.NE.Y).Min();
+            Robot robot = new Robot(2, 3, 2, toprowy);
+            hexworld.AddRobot(robot);
+            
             this.Refresh();
         }
 
-        private int GetHeight(int seed)
-        {
-
-            int hMod;
-            int low = 1;
-            int high = 10;
-            if (seed > 3)
-            {
-                low = seed - 3;
-            }
-            if (seed < 8)
-            {
-                high = seed + 3;
-            }
-            hMod = rand.Next(low, high + 1);
-            return hMod;
-        }
+        
 
         private void LogHexagons()
         {
@@ -102,40 +90,7 @@ namespace HexBot
             e.Graphics.FillEllipse(brush, x, y, width, height);
         }
 
-        private void BuildHexagons()
-        {
-            int side = 20;
-            Hexagon rhex = new Hexagon(20, 50, side, Hexagon.eFirstPoint.SW);
-            hexagons.Add(rhex);
-            int rows = 20;
-            for (int r = 0; r < rows; r++)
-            {
-                for (int i = 0; i < 19; i++)
-                {
-                    Hexagon oHex = hexagons.Last();
-                    if (i % 2 == 0)
-                    {
-                        hexagons.Add(new Hexagon(oHex.E.X, oHex.E.Y, side, Hexagon.eFirstPoint.NW));
-                    }
-                    else
-                    {
-                        hexagons.Add(new Hexagon(oHex.E.X, oHex.E.Y, side, Hexagon.eFirstPoint.SW));
-                    }
-                }
-                if (r < rows - 1)
-                {
-                    hexagons.Add(new Hexagon(rhex.SW.X, rhex.SW.Y, side, Hexagon.eFirstPoint.NW));
-                    rhex = hexagons.Last();
-                }
-
-            }
-            var hseed = 5;
-            foreach (var h in hexagons)
-            {
-                h.SetHeight(GetHeight(hseed));
-                hseed = h.Height;
-            }
-        }
+        
 
 
         private void btnPaint_Click(object sender, EventArgs e)

@@ -36,20 +36,28 @@ namespace HexBot
             }
         }
 
-        public Robot(int upjump, int downjump, int vision, List<Hexagon> hexworld)
+        public Hexagon CurrentHexagon { get; private set; }
+
+        public Robot(int upjump, int downjump, int vision, float toprowYvalue,Hexagon startingHex)
         {
             SetBaseRobot(upjump, downjump, vision);
-            this.HexWorld = hexworld;
-            SelectStartHexOnBottomRow();
+            
+            
+            this.CurrentHex = startingHex;
+            toprowY = toprowYvalue;
+
+            //What do we do with toprowY?
+            /*
             toprowY = (from h in this.HexWorld
                         select h.NE.Y).Min();
+             * */
             BeginJourney();
         }
 
         public int UpJump { get; private set; }
         public int DownJump { get; private set; }
         public int Vision { get; private set; }
-        public List<Hexagon> HexWorld { get; private set; }
+        
         public Hexagon CurrentHex { get; private set; }
         public delegate void CompletedJourneyHandler(object sender, CompletedJourneyEventArgs e);
         public event CompletedJourneyHandler CompletedJourney;
@@ -88,54 +96,7 @@ namespace HexBot
             }
         }
 
-        private void SelectStartHexOnBottomRow()
-        {
-            var MaxY = (from h in this.HexWorld
-                        select h.SE.Y).Max();
-            var bottomRow = (from h in this.HexWorld
-                             where h.SE.Y == MaxY
-                             select h);
-
-            this.HexWorld.ForEach(hw => hw.Hilighted = false);
-
-
-            List<Hexagon> BestHexes = new List<Hexagon>();
-            int mostmoves = 0;
-
-            foreach (Hexagon h in bottomRow)
-            {
-                int moves = AdjacentMovesAllowed(h);
-                if (moves > 0)
-                {
-                    bool updateMostMoves = false;
-                    if (moves > mostmoves)
-                    {
-                        BestHexes.Clear();
-                        BestHexes.Add(h);
-                        updateMostMoves = true;
-                        mostmoves = moves;
-                    }
-                    if (moves == mostmoves)
-                    {
-                        BestHexes.Add(h);
-                    }
-                    if (updateMostMoves) { moves = mostmoves; }
-                }
-                
-            }
-            if (BestHexes.Count() == 1)
-            {
-                this.CurrentHex = BestHexes.First();
-                this.CurrentHex.Selected = true;
-            }
-            else if (BestHexes.Count() > 1)
-            {
-                Random rand = new Random();
-                int pickone = rand.Next(1, BestHexes.Count());
-                this.CurrentHex = BestHexes[pickone - 1];
-                this.CurrentHex.Selected = true;
-            }
-        }
+       
         private int AdjacentMovesAllowed(Hexagon h)
         {
             int result = 0;
