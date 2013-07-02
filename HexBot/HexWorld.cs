@@ -30,11 +30,11 @@ namespace HexBot
             {
                 this.Robots = new List<Robot>();
             }
-            robot.SetCurrentHexagon(GetStartHexOnBottomRow());
+            robot.SetCurrentHexagon(GetStartHexOnBottomRow(robot));
             this.Robots.Add(robot);
             
         }
-        private Hexagon GetStartHexOnBottomRow()
+        private Hexagon GetStartHexOnBottomRow(Robot robot)
         {
             Hexagon result = new Hexagon();
 
@@ -52,7 +52,7 @@ namespace HexBot
 
             foreach (Hexagon h in bottomRow)
             {
-                int moves = AdjacentMovesAllowed(h);
+                int moves = AdjacentMovesAllowed(h,robot);
                 if (moves > 0)
                 {
                     bool updateMostMoves = false;
@@ -86,6 +86,29 @@ namespace HexBot
             }
             return result;
         }
+        private int AdjacentMovesAllowed(Hexagon h,Robot robot)
+        {
+            int result = 0;
+            foreach (HexSide hs in h.HexSides)
+            {
+                var aHex = from h1 in this.Tiles
+                           where h1.HexSides.Contains(hs)
+                           && !h1.Equals(h)
+                           select h1;
+
+                if (aHex.Count() == 1)
+                {
+                    Hexagon testHex = aHex.First();
+                    MoveResult mr = (HexUtils.isMoveAllowed(h, testHex, robot.UpJump, robot.DownJump));
+                    if (mr.MoveResultStatus == MoveResult.eMoveResult.Success)
+                    {
+                        result++;
+                    }
+                }
+            }
+            return result;
+        }
+
         private void BuildWorld()
         {
             int side = 20;

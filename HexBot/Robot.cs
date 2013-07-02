@@ -56,6 +56,8 @@ namespace HexBot
             toprowY = (from h in this.HexWorld
                         select h.NE.Y).Min();
              * */
+
+            //Not read to start the journey yet.
             BeginJourney();
         }
 
