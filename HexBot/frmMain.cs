@@ -108,7 +108,7 @@ namespace HexBot
 
         private void pboxMain_MouseDown(object sender, MouseEventArgs e)
         {
-            var h1 = (from hx in hexworld.Tiles
+            var hexselected = (from hx in hexworld.Tiles
                       where hx.Selected
                       select hx).FirstOrDefault();
            
@@ -117,24 +117,25 @@ namespace HexBot
                        where h.NW.X <= e.X && h.NE.X >= e.X
                        && h.NW.Y <= e.Y && h.SW.Y >= e.Y
                        select h).FirstOrDefault();
+
             MoveResult moveresult = new MoveResult(MoveResult.eMoveResult.DNE, "");
 
             if (hex != null)
             {
-                moveresult = HexUtils.isMoveAllowed(h1, hex,jumpup,jumpdown);
+                moveresult = HexUtils.isMoveAllowed(hexselected, hex,jumpup,jumpdown);
                 if (moveresult.MoveResultStatus== MoveResult.eMoveResult.Success)
                 {
-                    if (h1 != null)
+                    if (hexselected != null)
                     {
-                        h1.Selected = false;
+                        hexselected.Selected = false;
                     }
                     hex.Selected = true;
                 }
                 else
                 {
-                    if (h1 != null)
+                    if (hexselected != null)
                     {
-                        h1.Selected = true;
+                        hexselected.Selected = true;
                         hex.Selected = false;
                     }
                 }
