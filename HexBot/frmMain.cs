@@ -111,7 +111,7 @@ namespace HexBot
             var h1 = (from hx in hexworld.Tiles
                       where hx.Selected
                       select hx).FirstOrDefault();
-            HexPoint hp = new HexPoint(e.X, e.Y);
+           
             hexworld.Tiles.ForEach(h => h.Selected = false);
             var hex = (from h in hexworld.Tiles
                        where h.NW.X <= e.X && h.NE.X >= e.X
