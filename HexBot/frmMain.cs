@@ -165,6 +165,11 @@ namespace HexBot
             this.txtLog.AppendText(System.Environment.NewLine);
         }
 
+        private void btnGoBot_Click(object sender, EventArgs e)
+        {
+            Robot robot = hexworld.Robots[0];
+        }
+
 
        
 

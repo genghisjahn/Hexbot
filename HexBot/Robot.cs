@@ -84,53 +84,7 @@ namespace HexBot
             this.Vision = vision;
         }
 
-        public void BeginJourney()
-        {
-            Move();
-        }
-        private void Move(){
-            if (this.CurrentHexagon.NE.Y == toprowY)
-            {
-                string temp = "";
-            }
-            else
-            {
-                //Get a list of hexs that we can move to
-                //The further north the better, the higher the better
-                //Select one at random and move there.
-                //Raise An Event;
-                //Try again.
-            }
-        }
-
-        /*
-         * This stuff needs to be in the Hexworld class.
-         * The robot checks the world to see if the move is available.
-         * The world gives feedback if it is or is not and the reason why.
-         * Then of the possible moves, the bot decides what to do.
-         * 
-         private int AdjacentMovesAllowed(Hexagon h)
-         {
-             int result = 0;
-             foreach (HexSide hs in h.HexSides)
-             {
-                 var aHex = from h1 in this.HexWorld
-                            where h1.HexSides.Contains(hs)
-                            && !h1.Equals(h)
-                            select h1;
-
-                 if (aHex.Count() == 1)
-                 {
-                     Hexagon testHex = aHex.First();
-                     MoveResult mr = (HexUtils.isMoveAllowed(h, testHex, this.UpJump, this.DownJump));
-                     if (mr.MoveResultStatus == MoveResult.eMoveResult.Success)
-                     {
-                         result++;
-                     }
-                 }
-             }
-             return result;
-         }
-         * */
+        
+       
     }
 }
