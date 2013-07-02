@@ -56,6 +56,7 @@
     <Compile Include="HexSide.cs" />
     <Compile Include="HexUtils.cs" />
     <Compile Include="HexWorld.cs" />
+    <Compile Include="MoveAttempt.cs" />
     <Compile Include="MoveResult.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

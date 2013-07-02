@@ -60,7 +60,6 @@
             this.pboxMain.Size = new System.Drawing.Size(671, 730);
             this.pboxMain.TabIndex = 2;
             this.pboxMain.TabStop = false;
-            
             this.pboxMain.Paint += new System.Windows.Forms.PaintEventHandler(this.pboxMain_Paint);
             this.pboxMain.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pboxMain_MouseDown);
             // 
