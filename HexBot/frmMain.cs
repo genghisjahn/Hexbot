@@ -12,7 +12,7 @@ namespace HexBot
 {
     public partial class frmMain : Form
     {
-        List<Hexagon> hexagons = new List<Hexagon>();
+        //List<Hexagon> hexagons = new List<Hexagon>();
 
         HexWorld hexworld = new HexWorld("Hex world.");
         
@@ -38,7 +38,7 @@ namespace HexBot
 
         private void LogHexagons()
         {
-            foreach (var h in hexagons)
+            foreach (var h in hexworld.Tiles)
             {
                 this.txtLog.AppendText(h.Height.ToString());
                 this.txtLog.AppendText(Environment.NewLine);
@@ -53,7 +53,7 @@ namespace HexBot
                 SolidBrush selBrush = new SolidBrush(Color.Black);
                 SolidBrush hilightBrush = new SolidBrush(Color.Blue);
                 Pen penH = new Pen(Color.Blue);
-                foreach (var h in hexagons)
+                foreach (var h in hexworld.Tiles)
                 {
                     SolidBrush brush = new SolidBrush(h.Color);
                     e.Graphics.FillPolygon(brush, h.DrawPointFs.ToArray());
@@ -108,12 +108,12 @@ namespace HexBot
 
         private void pboxMain_MouseDown(object sender, MouseEventArgs e)
         {
-            var h1 = (from hx in hexagons
+            var h1 = (from hx in hexworld.Tiles
                       where hx.Selected
                       select hx).FirstOrDefault();
             HexPoint hp = new HexPoint(e.X, e.Y);
-            hexagons.ForEach(h => h.Selected = false);
-            var hex = (from h in hexagons
+            hexworld.Tiles.ForEach(h => h.Selected = false);
+            var hex = (from h in hexworld.Tiles
                        where h.NW.X <= e.X && h.NE.X >= e.X
                        && h.NW.Y <= e.Y && h.SW.Y >= e.Y
                        select h).FirstOrDefault();
