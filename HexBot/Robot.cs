@@ -9,11 +9,31 @@ namespace HexBot
     public class Robot
     {
         private float toprowY = 0;
+        private int serialNumber = 0;
 
         public Robot() { }
         public Robot(int upjump, int downjump, int vision)
         {
             SetBaseRobot(upjump, downjump, vision);
+        }
+
+        public void SetSerialNumber(int num)
+        {
+            if (this.serialNumber == 0)
+            {
+                if (num >0 )
+                {
+                    this.serialNumber = num;
+                }
+                else
+                {
+                    throw new Exception("Serial number must be greater than zero.");
+                }
+            }
+            else
+            {
+                throw new Exception("Serial number can only be set one.");
+            }
         }
 
         public Robot(int upjump, int downjump, int vision, List<Hexagon> hexworld)

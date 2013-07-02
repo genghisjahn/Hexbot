@@ -25,11 +25,6 @@ namespace HexBot
             NW = 5,
             W = 6
         }
-
-
-
-        
-
         private void HexInit(float x, float y, float side, eFirstPoint efirstpoint)
         {
             this.HexSideLength = side;
