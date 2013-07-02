@@ -18,17 +18,17 @@ namespace HexBot
             NW=6
         }
 
-        public MoveAttempt(eMoveDirection direction, int currentheight, int targetheight)
+        public MoveAttempt( eMoveDirection direction,  Hexagon targethex)
         {
             this.Direction = direction;
-            this.CurrentHeight = currentheight;
-            this.TargetHeight = targetheight;
+           
+            this.TargetHex = targethex;
         }
         
         
         public eMoveDirection Direction{get;private set;}
-        public int CurrentHeight{get;private set;}
-        public int TargetHeight { get; private set; }
+      
+        public Hexagon TargetHex { get; private set; }
 
     }
 }

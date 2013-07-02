@@ -43,12 +43,10 @@ namespace HexBot
             this.Robots.Add(robot);
 
         }
-        public MoveResult TryMove(MoveAttempt attemp,Robot robot)
+        public MoveResult TryMove(MoveAttempt attempt,Robot robot)
         {
             MoveResult result;
-
-
-            result = new MoveResult(MoveResult.eMoveResult.DNE, "This isn't working yet.");
+            result =HexUtils.isMoveAllowed(robot.CurrentHexagon, attempt.TargetHex, robot.UpJump, robot.DownJump);
             return result;
         }
         #endregion
