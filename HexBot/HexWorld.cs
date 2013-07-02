@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using HexBot;
 namespace HexBot
 {
     public class HexWorld
@@ -43,10 +43,12 @@ namespace HexBot
             this.Robots.Add(robot);
 
         }
-        public MoveResult TryMove(MoveAttempt attempt,Robot robot)
+        public MoveResult TryMove(HexUtils.eMoveDirection direction ,Robot robot)
         {
             MoveResult result;
-            result =HexUtils.isMoveAllowed(robot.CurrentHexagon, attempt.TargetHex, robot.UpJump, robot.DownJump);
+            Hexagon targethex=new Hexagon();
+            throw new Exception("You need to figure out what the target hex is based on the direction of the move attempted from the robot's currently location.");
+            result =HexUtils.isMoveAllowed(robot.CurrentHexagon,targethex , robot.UpJump, robot.DownJump);
             return result;
         }
         #endregion

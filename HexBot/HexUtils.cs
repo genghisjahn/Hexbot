@@ -8,6 +8,16 @@ namespace HexBot
 {
     public static class HexUtils
     {
+        public enum eMoveDirection
+        {
+            N = 1,
+            NE = 2,
+            SE = 3,
+            S = 4,
+            SW = 5,
+            NW = 6
+        }
+
         public static void ClearAllHighlights(List<Hexagon> hexagons)
         {
             hexagons.ForEach(h => h.Hilighted = false);
