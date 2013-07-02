@@ -168,6 +168,9 @@ namespace HexBot
         private void btnGoBot_Click(object sender, EventArgs e)
         {
             Robot robot = hexworld.Robots[0];
+            throw new Exception("This isn't ready yet.");
+            
+            //hexworld.TryMove(new MoveAttempt(MoveAttempt.eMoveDirection.N,HexUtils.
         }
 
 
