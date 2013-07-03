@@ -47,7 +47,8 @@ namespace HexBot
 
         public MoveResult TryMove(HexUtils.eMoveDirection direction, int index)
         {
-            MoveResult result = new MoveResult(MoveResult.eMoveResult.DNE, ""); TryMove(direction, this.Robots[index]);
+            MoveResult result = new MoveResult(MoveResult.eMoveResult.DNE, "");
+            TryMove(direction, this.Robots[index]);
             return result;
         }
 

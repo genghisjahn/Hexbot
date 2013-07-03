@@ -15,7 +15,7 @@ namespace HexBot
         //List<Hexagon> hexagons = new List<Hexagon>();
 
         HexWorld hexworld = new HexWorld("Hex world.");
-        
+
         int jumpup = 2;
         int jumpdown = 3;
 
@@ -30,11 +30,11 @@ namespace HexBot
                              select h.NE.Y).Min();
             Robot robot = new Robot(2, 3, 2, toprowy);
             hexworld.AddRobot(robot);
-            
+
             this.Refresh();
         }
 
-        
+
 
         private void LogHexagons()
         {
@@ -58,7 +58,7 @@ namespace HexBot
                     SolidBrush brush = new SolidBrush(h.Color);
                     e.Graphics.FillPolygon(brush, h.DrawPointFs.ToArray());
                     e.Graphics.DrawPolygon(pen, h.DrawPointFs.ToArray());
-                    
+
                     if (h.Hilighted)
                     {
                         DrawSelectCircle(h, e, hilightBrush);
@@ -78,7 +78,7 @@ namespace HexBot
 
         }
 
-        private void DrawSelectCircle(Hexagon h, PaintEventArgs e,Brush brush)
+        private void DrawSelectCircle(Hexagon h, PaintEventArgs e, Brush brush)
         {
             //Pen pen = new Pen(Color.FromArgb(255, 0, 0, 0));
             int radius = 5;
@@ -90,7 +90,7 @@ namespace HexBot
             e.Graphics.FillEllipse(brush, x, y, width, height);
         }
 
-        
+
 
 
         private void btnPaint_Click(object sender, EventArgs e)
@@ -109,9 +109,9 @@ namespace HexBot
         private void pboxMain_MouseDown(object sender, MouseEventArgs e)
         {
             var hexselected = (from hx in hexworld.Tiles
-                      where hx.Selected
-                      select hx).FirstOrDefault();
-           
+                               where hx.Selected
+                               select hx).FirstOrDefault();
+
             hexworld.Tiles.ForEach(h => h.Selected = false);
 
             /*
@@ -124,16 +124,16 @@ namespace HexBot
              * No point in having this once the robot takes over movements.
              * */
             var hextarget = (from h in hexworld.Tiles
-                       where h.NW.X <= e.X && h.NE.X >= e.X
-                       && h.NW.Y <= e.Y && h.SW.Y >= e.Y
-                       select h).FirstOrDefault();
-            
+                             where h.NW.X <= e.X && h.NE.X >= e.X
+                             && h.NW.Y <= e.Y && h.SW.Y >= e.Y
+                             select h).FirstOrDefault();
+
             MoveResult moveresult = new MoveResult(MoveResult.eMoveResult.DNE, "");
 
             if (hextarget != null)
             {
-                moveresult = HexUtils.isMoveAllowed(hexselected, hextarget,jumpup,jumpdown);
-                if (moveresult.MoveResultStatus== MoveResult.eMoveResult.Success)
+                moveresult = HexUtils.isMoveAllowed(hexselected, hextarget, jumpup, jumpdown);
+                if (moveresult.MoveResultStatus == MoveResult.eMoveResult.Success)
                 {
                     if (hexselected != null)
                     {
@@ -149,7 +149,7 @@ namespace HexBot
                         hextarget.Selected = false;
                     }
                 }
-               
+
             }
 
             WriteLog(moveresult);
@@ -161,21 +161,15 @@ namespace HexBot
 
         private void WriteLog(MoveResult moveresult)
         {
-            this.txtLog.AppendText(string.Format("{0} {1}",moveresult.MoveResultStatus.ToString(),moveresult.ResultMessage));
+            this.txtLog.AppendText(string.Format("{0} {1}", moveresult.MoveResultStatus.ToString(), moveresult.ResultMessage));
             this.txtLog.AppendText(System.Environment.NewLine);
         }
 
         private void btnGoBot_Click(object sender, EventArgs e)
         {
-            Robot robot = hexworld.Robots[0];
-            throw new Exception("This isn't ready yet.");
-            
-            
+            MoveResult moveresult = hexworld.TryMove(HexUtils.eMoveDirection.N, 0);
+            WriteLog(moveresult);
+
         }
-
-
-       
-
-        
     }
 }
