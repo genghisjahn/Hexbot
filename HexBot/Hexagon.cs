@@ -86,7 +86,8 @@ namespace HexBot
 
         public int Height { get; private set; }
 
-        public bool Selected { get; set; }
+        public List<IWorldObject> ContainsObjects { get; private set; }
+
         public bool Hilighted { get; set; }
 
         public Color Color {
