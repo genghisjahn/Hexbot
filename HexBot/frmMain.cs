@@ -58,11 +58,12 @@ namespace HexBot
                     SolidBrush brush = new SolidBrush(h.Color);
                     e.Graphics.FillPolygon(brush, h.DrawPointFs.ToArray());
                     e.Graphics.DrawPolygon(pen, h.DrawPointFs.ToArray());
-
+                    /*
                     if (h.Hilighted)
                     {
                         DrawSelectCircle(h, e, hilightBrush);
                     }
+                     * */
                     if (h.Selected)
                     {
                         DrawSelectCircle(h, e, selBrush);
