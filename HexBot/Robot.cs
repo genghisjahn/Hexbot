@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Drawing;
 namespace HexBot
 {
-    public class Robot
+    public class Robot:IWorldObject
     {
         private float toprowY = 0;
         private int serialNumber = 0;
@@ -80,6 +80,22 @@ namespace HexBot
             this.UpJump = upjump;
             this.DownJump = downjump;
             this.Vision = vision;
+        }
+
+        public System.Drawing.Color GetColor()
+        {
+            return Color.Black;
+        }
+
+        public System.Drawing.SolidBrush GetShape()
+        {
+            int radius = 5;
+            float x = this.CurrentHexagon.Center.X - radius;
+            float y = this.CurrentHexagon.Center.Y - radius;
+            float width = 2 * radius;
+            float height = 2 * radius;
+            SolidBrush selBrush = new SolidBrush(Color.Black);
+            return selBrush;
         }
     }
 }

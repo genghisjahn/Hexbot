@@ -80,13 +80,11 @@ namespace HexBot
 
         private void DrawSelectCircle(Hexagon h, PaintEventArgs e, Brush brush)
         {
-            //Pen pen = new Pen(Color.FromArgb(255, 0, 0, 0));
             int radius = 5;
             float x = h.Center.X - radius;
             float y = h.Center.Y - radius;
             float width = 2 * radius;
             float height = 2 * radius;
-            //e.Graphics.DrawEllipse(pen, x, y, width, height);
             e.Graphics.FillEllipse(brush, x, y, width, height);
         }
 
