@@ -16,6 +16,7 @@ namespace HexBot
         public string WorldName { get; private set; }
         public List<Hexagon> Tiles { get; private set; }
         public List<Robot> Robots { get; private set; }
+        
         #endregion
 
         #region "constructors"
@@ -43,17 +44,70 @@ namespace HexBot
             this.Robots.Add(robot);
 
         }
-        public MoveResult TryMove(HexUtils.eMoveDirection direction ,Robot robot)
+
+        public MoveResult TryMove(HexUtils.eMoveDirection direction, int index)
         {
-            MoveResult result;
-            Hexagon targethex=new Hexagon();
-            throw new Exception("You need to figure out what the target hex is based on the direction of the move attempted from the robot's currently location.");
-            result =HexUtils.isMoveAllowed(robot.CurrentHexagon,targethex , robot.UpJump, robot.DownJump);
+            MoveResult result = new MoveResult(MoveResult.eMoveResult.DNE, ""); TryMove(direction, this.Robots[index]);
+            return result;
+        }
+
+        public MoveResult TryMove(HexUtils.eMoveDirection direction, Robot robot)
+        {
+            MoveResult result = new MoveResult(MoveResult.eMoveResult.DNE,"");
+
+            Hexagon targethex = GetAdjacentHexagaon(robot.CurrentHexagon, direction);
+
+            if (targethex != null)
+            {
+                result = HexUtils.isMoveAllowed(robot.CurrentHexagon, targethex, robot.UpJump, robot.DownJump);
+            }
             return result;
         }
         #endregion
 
         #region "Private Methods"
+        private Hexagon GetAdjacentHexagaon(Hexagon hex, HexUtils.eMoveDirection direction)
+        {
+            Hexagon result;
+            switch (direction)
+            {
+                case HexUtils.eMoveDirection.N:
+                    result = (from h in this.Tiles
+                              where hex.NSide == h.SSide
+                              select h).FirstOrDefault();
+                    break;
+                case HexUtils.eMoveDirection.NE:
+                    result = (from h in this.Tiles
+                              where hex.NESide == h.SWSide
+                              select h).FirstOrDefault();
+                    break;
+                case HexUtils.eMoveDirection.SE:
+                    result = (from h in this.Tiles
+                              where hex.SESide == h.NESide
+                              select h).FirstOrDefault();
+                    break;
+                case HexUtils.eMoveDirection.S:
+                    result = (from h in this.Tiles
+                              where hex.SSide == h.NSide
+                              select h).FirstOrDefault();
+                    break;
+                case HexUtils.eMoveDirection.SW:
+                    result = (from h in this.Tiles
+                              where hex.SWSide == h.NESide
+                              select h).FirstOrDefault();
+                    break;
+
+                case HexUtils.eMoveDirection.NW:
+                    result = (from h in this.Tiles
+                              where hex.NWSide == h.SESide
+                              select h).FirstOrDefault();
+                    break;
+                default:
+                    result = null;
+                    break;
+            }
+            return result;
+        }
         private Hexagon GetStartHexOnBottomRow(Robot robot)
         {
             Hexagon result = new Hexagon();
