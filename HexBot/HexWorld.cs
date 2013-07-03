@@ -62,6 +62,10 @@ namespace HexBot
             if (targethex != null)
             {
                 result = HexUtils.isMoveAllowed(robot.CurrentHexagon, targethex, robot.UpJump, robot.DownJump);
+                if (result.MoveResultStatus == MoveResult.eMoveResult.Success)
+                {
+                    robot.SetCurrentHexagon(targethex);
+                }
             }
             return result;
         }
@@ -70,7 +74,7 @@ namespace HexBot
         #region "Private Methods"
         private Hexagon GetAdjacentHexagaon(Hexagon hex, HexUtils.eMoveDirection direction)
         {
-            Hexagon result;
+            Hexagon result=new Hexagon();
             switch (direction)
             {
                 case HexUtils.eMoveDirection.N:
