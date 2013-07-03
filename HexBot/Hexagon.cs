@@ -85,9 +85,10 @@ namespace HexBot
         public HexSide NESide { get; private set; }
 
         public int Height { get; private set; }
-
+        
         public List<IWorldObject> ContainsObjects { get; private set; }
 
+        public bool Selected { get; set; }
         public bool Hilighted { get; set; }
 
         public Color Color {
