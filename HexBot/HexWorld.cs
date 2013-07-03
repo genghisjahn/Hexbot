@@ -41,7 +41,7 @@ namespace HexBot
                 this.Robots = new List<Robot>();
             }
             robot.SetCurrentHexagon(GetStartHexOnBottomRow(robot));
-            
+
             this.Robots.Add(robot);
 
         }
@@ -55,7 +55,7 @@ namespace HexBot
 
         public MoveResult TryMove(HexUtils.eMoveDirection direction, Robot robot)
         {
-            MoveResult result = new MoveResult(MoveResult.eMoveResult.DNE,"");
+            MoveResult result = new MoveResult(MoveResult.eMoveResult.DNE, "");
 
             Hexagon targethex = GetAdjacentHexagaon(robot.CurrentHexagon, direction);
 
@@ -75,34 +75,40 @@ namespace HexBot
             {
                 case HexUtils.eMoveDirection.N:
                     result = (from h in this.Tiles
-                              where hex.NE == h.SE && hex.NW==h.SW
+                              where h.HexSides.Contains(hex.NSide)
+                              && h != hex
                               select h).FirstOrDefault();
                     break;
                 case HexUtils.eMoveDirection.NE:
-                    result = (from h in this.Tiles
-                              where hex.NESide == h.SWSide
-                              select h).FirstOrDefault();
+                    (from h in this.Tiles
+                     where h.HexSides.Contains(hex.NESide)
+                     && h != hex
+                     select h).FirstOrDefault();
                     break;
                 case HexUtils.eMoveDirection.SE:
-                    result = (from h in this.Tiles
-                              where hex.SESide == h.NESide
-                              select h).FirstOrDefault();
+                    (from h in this.Tiles
+                     where h.HexSides.Contains(hex.SESide)
+                     && h != hex
+                     select h).FirstOrDefault();
                     break;
                 case HexUtils.eMoveDirection.S:
-                    result = (from h in this.Tiles
-                              where hex.SSide == h.NSide
-                              select h).FirstOrDefault();
+                    (from h in this.Tiles
+                     where h.HexSides.Contains(hex.SSide)
+                     && h != hex
+                     select h).FirstOrDefault();
                     break;
                 case HexUtils.eMoveDirection.SW:
-                    result = (from h in this.Tiles
-                              where hex.SWSide == h.NESide
-                              select h).FirstOrDefault();
+                    (from h in this.Tiles
+                     where h.HexSides.Contains(hex.SWSide)
+                     && h != hex
+                     select h).FirstOrDefault();
                     break;
 
                 case HexUtils.eMoveDirection.NW:
-                    result = (from h in this.Tiles
-                              where hex.NWSide == h.SESide
-                              select h).FirstOrDefault();
+                    (from h in this.Tiles
+                     where h.HexSides.Contains(hex.NWSide)
+                     && h != hex
+                     select h).FirstOrDefault();
                     break;
                 default:
                     result = null;
