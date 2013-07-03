@@ -27,9 +27,11 @@ namespace HexBot
         private void frmMain_Load(object sender, EventArgs e)
         {
             float toprowy = (from h in hexworld.Tiles
-                             select h.NE.Y).Min();
+                             select h.NE.Y).Max();
             Robot robot = new Robot(2, 3, 2, toprowy);
             hexworld.AddRobot(robot);
+
+            
 
             this.Refresh();
         }
@@ -58,12 +60,18 @@ namespace HexBot
                     SolidBrush brush = new SolidBrush(h.Color);
                     e.Graphics.FillPolygon(brush, h.DrawPointFs.ToArray());
                     e.Graphics.DrawPolygon(pen, h.DrawPointFs.ToArray());
-                    /*
-                    if (h.Hilighted)
+
+                    /*This is just to find where we are starting */
+                    if (h == hexworld.Robots[0].CurrentHexagon)
                     {
                         DrawSelectCircle(h, e, hilightBrush);
                     }
-                     * */
+
+                    if (h.Hilighted)
+                    {
+                        
+                    }
+                   
                     if (h.Selected)
                     {
                         DrawSelectCircle(h, e, selBrush);

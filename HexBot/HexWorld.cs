@@ -41,6 +41,7 @@ namespace HexBot
                 this.Robots = new List<Robot>();
             }
             robot.SetCurrentHexagon(GetStartHexOnBottomRow(robot));
+            
             this.Robots.Add(robot);
 
         }
@@ -74,7 +75,7 @@ namespace HexBot
             {
                 case HexUtils.eMoveDirection.N:
                     result = (from h in this.Tiles
-                              where hex.NSide == h.SSide
+                              where hex.NE == h.SE && hex.NW==h.SW
                               select h).FirstOrDefault();
                     break;
                 case HexUtils.eMoveDirection.NE:
