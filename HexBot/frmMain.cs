@@ -134,9 +134,7 @@ namespace HexBot
                              where h.NW.X <= e.X && h.NE.X >= e.X
                              && h.NW.Y <= e.Y && h.SW.Y >= e.Y
                              select h).FirstOrDefault();
-
             MoveResult moveresult = new MoveResult(MoveResult.eMoveResult.DNE, "");
-
             if (hextarget != null)
             {
                 moveresult = HexUtils.isMoveAllowed(hexselected, hextarget, jumpup, jumpdown);
@@ -156,14 +154,9 @@ namespace HexBot
                         hextarget.Selected = false;
                     }
                 }
-
             }
-
             WriteLog(moveresult);
-
             this.Refresh();
-
-
         }
 
         private void WriteLog(MoveResult moveresult)
