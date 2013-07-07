@@ -53,7 +53,6 @@ namespace HexBot
         public int DownJump { get; private set; }
         public int Vision { get; private set; }
         
-
         public delegate void CompletedJourneyHandler(object sender, CompletedJourneyEventArgs e);
         public event CompletedJourneyHandler CompletedJourney;
         protected virtual void OnCompletedJourney(CompletedJourneyEventArgs e)
