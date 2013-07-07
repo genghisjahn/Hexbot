@@ -170,6 +170,7 @@ namespace HexBot
         private void MoveBot()
         {
             hexworld.Robots[0].PowerOn();
+            
             //MoveResult moveresult = hexworld.TryMove(HexUtils.eMoveDirection.N, 0);
             this.Refresh();
             //WriteLog(moveresult);

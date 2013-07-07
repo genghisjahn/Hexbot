@@ -44,7 +44,11 @@ namespace HexBot
 
             this.Robots.Add(robot);
             robot.LookAround += new EventHandler(OnRobotLookAround);
-
+            robot.TryMove += new EventHandler(OnRobotTryMove);
+        }
+        private void OnRobotTryMove(object s, EventArgs e)
+        {
+            string temp = "";
         }
         private void OnRobotLookAround(object s, EventArgs e)
         {

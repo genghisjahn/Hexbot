@@ -23,7 +23,6 @@ namespace HexBot
 
         private float toprowY = 0;
         private int serialNumber = 0;
-
         private void ReceiveCameraInput(List<Hexagon> hexes)
         {
             var OrderByPreference = (from h in hexes
@@ -41,7 +40,10 @@ namespace HexBot
             HexUtils.eMoveDirection direction;
             foreach (var hex in hexes)
             {
-                direction = GetDirectionOfAdjancentHex(hex);        
+                direction = GetDirectionOfAdjancentHex(hex);
+                TryMoveEventArgs tmargs = new TryMoveEventArgs();
+                tmargs.Direction = direction;
+                this.TryMove(this, tmargs);
             }
         }
         private HexUtils.eMoveDirection GetDirectionOfAdjancentHex(Hexagon hex)
@@ -103,12 +105,9 @@ namespace HexBot
         }
 
         public event EventHandler TryMove;
-        public void OnTryMove()
+        public void OnTryMove(MoveResult mresult,Hexagon newhex)
         {
-            EventHandler handler = TryMove;
-            TryMoveEventArgs args = new TryMoveEventArgs();
-            args.Direction = HexUtils.eMoveDirection.N;
-            if (null != handler) handler(this, EventArgs.Empty);
+            var temp = "";
         }
         public int SerialNumber { get; private set; }
         public void SetSerialNumber(int num)
