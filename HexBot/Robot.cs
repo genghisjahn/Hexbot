@@ -8,6 +8,17 @@ namespace HexBot
 {
     public class Robot:IWorldObject
     {
+        public class LookAroundEventArgs : EventArgs
+        {
+            public int Radius { get; set; }
+            public DateTime EventTime { get; set; }
+        }
+
+        public class TryMoveEventArgs : EventArgs
+        {
+            public HexUtils.eMoveDirection Direction { get; set; }
+        }
+
         private float toprowY = 0;
         private int serialNumber = 0;
 
@@ -15,6 +26,25 @@ namespace HexBot
         public Robot(int upjump, int downjump, int vision)
         {
             SetBaseRobot(upjump, downjump, vision);
+        }
+        public event EventHandler LookAround;
+        public void OnLookAround()
+        {
+            EventHandler handler = LookAround;
+            LookAroundEventArgs args = new LookAroundEventArgs();
+            args.EventTime = DateTime.UtcNow;
+            args.Radius = 1;
+            
+            if (null != handler) handler(this, args);
+        }
+
+        public event EventHandler TryMove;
+        public void OnTryMove()
+        {
+            EventHandler handler = TryMove;
+            TryMoveEventArgs args = new TryMoveEventArgs();
+            args.Direction = HexUtils.eMoveDirection.N;
+            if (null != handler) handler(this, EventArgs.Empty);
         }
 
         public void SetSerialNumber(int num)
