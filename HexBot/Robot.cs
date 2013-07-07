@@ -22,6 +22,13 @@ namespace HexBot
         private float toprowY = 0;
         private int serialNumber = 0;
 
+        public void PowerOn()
+        {
+            LookAroundEventArgs args =new LookAroundEventArgs();
+            args.Radius=1;
+            this.LookAround(this, args);
+        }
+
         public Robot() { }
         public Robot(int upjump, int downjump, int vision)
         {
