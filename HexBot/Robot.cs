@@ -46,18 +46,7 @@ namespace HexBot
         public Robot(int upjump, int downjump, int vision, float toprowYvalue)
         {
             SetBaseRobot(upjump, downjump, vision);
-            
-            
-            //this.CurrentHex = startingHex;
             toprowY = toprowYvalue;
-
-            //What do we do with toprowY?
-            /*
-            toprowY = (from h in this.HexWorld
-                        select h.NE.Y).Min();
-             * */
-
-            
         }
 
         public int UpJump { get; private set; }
