@@ -168,6 +168,7 @@ namespace HexBot
         private void btnGoBot_Click(object sender, EventArgs e)
         {
             MoveResult moveresult = hexworld.TryMove(HexUtils.eMoveDirection.N, 0);
+            this.Refresh();
             WriteLog(moveresult);
 
         }
