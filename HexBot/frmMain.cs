@@ -37,7 +37,7 @@ namespace HexBot
         private void OnRobotLookAround(object s, EventArgs e)
         {
             Robot objRobot = (Robot)s;
-            Console.WriteLine("Robot {0} looked around.", objRobot.ToString());
+            Console.WriteLine("Robot {0} looked around.", objRobot.SerialNumber.ToString());
         }
 
         private void LogHexagons()
@@ -174,9 +174,9 @@ namespace HexBot
         private void MoveBot()
         {
             hexworld.Robots[0].PowerOn();
-            MoveResult moveresult = hexworld.TryMove(HexUtils.eMoveDirection.N, 0);
+            //MoveResult moveresult = hexworld.TryMove(HexUtils.eMoveDirection.N, 0);
             this.Refresh();
-            WriteLog(moveresult);
+            //WriteLog(moveresult);
         }
 
     }

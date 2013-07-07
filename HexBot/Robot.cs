@@ -53,7 +53,7 @@ namespace HexBot
             args.Direction = HexUtils.eMoveDirection.N;
             if (null != handler) handler(this, EventArgs.Empty);
         }
-
+        public int SerialNumber { get; private set; }
         public void SetSerialNumber(int num)
         {
             if (this.serialNumber == 0)
