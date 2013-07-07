@@ -6,21 +6,83 @@ using System.Threading.Tasks;
 using System.Drawing;
 namespace HexBot
 {
+    public class LookAroundEventArgs : EventArgs
+    {
+        public int Radius { get; set; }
+        public DateTime EventTime { get; set; }
+    }
+
+    public class TryMoveEventArgs : EventArgs
+    {
+        public HexUtils.eMoveDirection Direction { get; set; }
+    }
+
     public class Robot:IWorldObject
     {
-        public class LookAroundEventArgs : EventArgs
-        {
-            public int Radius { get; set; }
-            public DateTime EventTime { get; set; }
-        }
-
-        public class TryMoveEventArgs : EventArgs
-        {
-            public HexUtils.eMoveDirection Direction { get; set; }
-        }
+        
 
         private float toprowY = 0;
         private int serialNumber = 0;
+
+        private void ReceiveCameraInput(List<Hexagon> hexes)
+        {
+            var OrderByPreference = (from h in hexes
+                                     orderby h.Center.Y ascending, h.Height descending
+                                     select h).ToList();
+            CycleThroughMoves(OrderByPreference);
+            //Attempt to move in order of preference
+            //Until a move is successful 
+            //or all moves are tried, in which case
+            //the bot is stuck.
+        }
+        private void CycleThroughMoves(List<Hexagon> hexes)
+        {
+            
+            HexUtils.eMoveDirection direction;
+            foreach (var hex in hexes)
+            {
+                direction = GetDirectionOfAdjancentHex(hex);        
+            }
+        }
+        private HexUtils.eMoveDirection GetDirectionOfAdjancentHex(Hexagon hex)
+        {
+            Hexagon chex = this.CurrentHexagon;
+            HexUtils.eMoveDirection direction;
+            if (hex.SE == chex.NE && hex.SW == chex.NW)
+            {
+                direction = HexUtils.eMoveDirection.N;
+                return direction;
+            }
+            if (hex.W == chex.NE && hex.SW == chex.E)
+            {
+                direction = HexUtils.eMoveDirection.NE;
+                return direction;
+            }
+            if (hex.NW == chex.SW && hex.W == chex.E)
+            {
+                direction = HexUtils.eMoveDirection.SE;
+                return direction;
+
+            } 
+            if (hex.NW == chex.SW && hex.NE == chex.SE)
+            {
+                direction = HexUtils.eMoveDirection.S;
+                return direction;
+            }
+            if (hex.NE == chex.W && hex.E == chex.SW)
+            {
+                direction = HexUtils.eMoveDirection.SW;
+                return direction;
+            }
+            if (hex.SE == chex.W && hex.E == chex.NW)
+            {
+                direction = HexUtils.eMoveDirection.NW;
+                return direction;
+            }
+            return HexUtils.eMoveDirection.DNE;
+            
+        }
+
 
         public void PowerOn()
         {
@@ -35,14 +97,9 @@ namespace HexBot
             SetBaseRobot(upjump, downjump, vision);
         }
         public event EventHandler LookAround;
-        public void OnLookAround()
+        public void OnLookAround(List<Hexagon> hexes)
         {
-            EventHandler handler = LookAround;
-            LookAroundEventArgs args = new LookAroundEventArgs();
-            args.EventTime = DateTime.UtcNow;
-            args.Radius = 1;
-            
-            if (null != handler) handler(this, args);
+            ReceiveCameraInput(hexes);
         }
 
         public event EventHandler TryMove;

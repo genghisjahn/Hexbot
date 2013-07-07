@@ -10,12 +10,13 @@ namespace HexBot
     {
         public enum eMoveDirection
         {
+            DNE=0,
             N = 1,
             NE = 2,
             SE = 3,
             S = 4,
             SW = 5,
-            NW = 6
+            NW = 6,
         }
 
         public static void ClearAllHighlights(List<Hexagon> hexagons)

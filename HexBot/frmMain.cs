@@ -30,15 +30,11 @@ namespace HexBot
                              select h.NE.Y).Max();
             Robot robot = new Robot(2, 3, 2, toprowy);
             hexworld.AddRobot(robot);
-            robot.LookAround += new EventHandler(OnRobotLookAround);
+            
             this.Refresh();
         }
 
-        private void OnRobotLookAround(object s, EventArgs e)
-        {
-            Robot objRobot = (Robot)s;
-            Console.WriteLine("Robot {0} looked around.", objRobot.SerialNumber.ToString());
-        }
+        
 
         private void LogHexagons()
         {

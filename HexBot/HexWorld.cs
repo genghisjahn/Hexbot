@@ -16,7 +16,7 @@ namespace HexBot
         public string WorldName { get; private set; }
         public List<Hexagon> Tiles { get; private set; }
         public List<Robot> Robots { get; private set; }
-        
+
         #endregion
 
         #region "constructors"
@@ -43,8 +43,30 @@ namespace HexBot
             robot.SetCurrentHexagon(GetStartHexOnBottomRow(robot));
 
             this.Robots.Add(robot);
+            robot.LookAround += new EventHandler(OnRobotLookAround);
 
         }
+        private void OnRobotLookAround(object s, EventArgs e)
+        {
+            LookAroundEventArgs lookargs = (LookAroundEventArgs)e;
+            Robot objRobot = (Robot)s;
+            List<Hexagon> caminput = new List<Hexagon>();
+            if (lookargs.Radius == 1)
+            {
+                caminput.Add(GetAdjacentHexagon(objRobot.CurrentHexagon, HexUtils.eMoveDirection.N));
+                caminput.Add(GetAdjacentHexagon(objRobot.CurrentHexagon, HexUtils.eMoveDirection.NE));
+                caminput.Add(GetAdjacentHexagon(objRobot.CurrentHexagon, HexUtils.eMoveDirection.SE));
+                caminput.Add(GetAdjacentHexagon(objRobot.CurrentHexagon, HexUtils.eMoveDirection.S));
+                caminput.Add(GetAdjacentHexagon(objRobot.CurrentHexagon, HexUtils.eMoveDirection.SW));
+                caminput.Add(GetAdjacentHexagon(objRobot.CurrentHexagon, HexUtils.eMoveDirection.NW));
+            }
+            var validhexes = (from hx in caminput
+                             where hx!=null
+                             select hx).ToList();
+            
+            objRobot.OnLookAround(validhexes);
+        }
+
 
         public MoveResult TryMove(HexUtils.eMoveDirection direction, int index)
         {
@@ -57,7 +79,7 @@ namespace HexBot
         {
             MoveResult result = new MoveResult(MoveResult.eMoveResult.DNE, "");
 
-            Hexagon targethex = GetAdjacentHexagaon(robot.CurrentHexagon, direction);
+            Hexagon targethex = GetAdjacentHexagon(robot.CurrentHexagon, direction);
 
             if (targethex != null)
             {
@@ -72,9 +94,9 @@ namespace HexBot
         #endregion
 
         #region "Private Methods"
-        private Hexagon GetAdjacentHexagaon(Hexagon hex, HexUtils.eMoveDirection direction)
+        private Hexagon GetAdjacentHexagon(Hexagon hex, HexUtils.eMoveDirection direction)
         {
-            Hexagon result=new Hexagon();
+            Hexagon result = new Hexagon();
             switch (direction)
             {
                 case HexUtils.eMoveDirection.N:
@@ -84,32 +106,32 @@ namespace HexBot
                               select h).FirstOrDefault();
                     break;
                 case HexUtils.eMoveDirection.NE:
-                    (from h in this.Tiles
+                    result = (from h in this.Tiles
                      where h.HexSides.Contains(hex.NESide)
                      && h != hex
                      select h).FirstOrDefault();
                     break;
                 case HexUtils.eMoveDirection.SE:
-                    (from h in this.Tiles
+                    result = (from h in this.Tiles
                      where h.HexSides.Contains(hex.SESide)
                      && h != hex
                      select h).FirstOrDefault();
                     break;
                 case HexUtils.eMoveDirection.S:
-                    (from h in this.Tiles
+                    result = (from h in this.Tiles
                      where h.HexSides.Contains(hex.SSide)
                      && h != hex
                      select h).FirstOrDefault();
                     break;
                 case HexUtils.eMoveDirection.SW:
-                    (from h in this.Tiles
+                    result = (from h in this.Tiles
                      where h.HexSides.Contains(hex.SWSide)
                      && h != hex
                      select h).FirstOrDefault();
                     break;
 
                 case HexUtils.eMoveDirection.NW:
-                    (from h in this.Tiles
+                    result = (from h in this.Tiles
                      where h.HexSides.Contains(hex.NWSide)
                      && h != hex
                      select h).FirstOrDefault();
