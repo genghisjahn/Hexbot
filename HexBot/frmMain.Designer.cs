@@ -53,7 +53,6 @@
             this.btnPaint.TabIndex = 1;
             this.btnPaint.Text = "Paint";
             this.btnPaint.UseVisualStyleBackColor = true;
-            this.btnPaint.Click += new System.EventHandler(this.btnPaint_Click);
             // 
             // pboxMain
             // 
@@ -64,7 +63,7 @@
             this.pboxMain.TabIndex = 2;
             this.pboxMain.TabStop = false;
             this.pboxMain.Paint += new System.Windows.Forms.PaintEventHandler(this.pboxMain_Paint);
-            this.pboxMain.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pboxMain_MouseDown);
+            
             // 
             // btnGoBot
             // 

@@ -103,66 +103,13 @@ namespace HexBot
         }
 
 
-
-
-        private void btnPaint_Click(object sender, EventArgs e)
-        {
-            LogHexagons();
-        }
-
-
-
         private void pboxMain_Paint(object sender, PaintEventArgs e)
         {
             DrawHex(e);
 
         }
 
-        private void pboxMain_MouseDown(object sender, MouseEventArgs e)
-        {
-            var hexselected = (from hx in hexworld.Tiles
-                               where hx.Selected
-                               select hx).FirstOrDefault();
-
-            hexworld.Tiles.ForEach(h => h.Selected = false);
-
-            /*
-             * The hextarget linq code is to find out which
-             * hexagon the user clicked on.  It's possible to click
-             * between hexagons, which results in a DNE even though
-             * the user will think it should work or give something
-             * more description.
-             * 
-             * No point in having this once the robot takes over movements.
-             * */
-            var hextarget = (from h in hexworld.Tiles
-                             where h.NW.X <= e.X && h.NE.X >= e.X
-                             && h.NW.Y <= e.Y && h.SW.Y >= e.Y
-                             select h).FirstOrDefault();
-            MoveResult moveresult = new MoveResult(MoveResult.eMoveResult.DNE, "");
-            if (hextarget != null)
-            {
-                moveresult = HexUtils.isMoveAllowed(hexselected, hextarget, jumpup, jumpdown);
-                if (moveresult.MoveResultStatus == MoveResult.eMoveResult.Success)
-                {
-                    if (hexselected != null)
-                    {
-                        hexselected.Selected = false;
-                    }
-                    hextarget.Selected = true;
-                }
-                else
-                {
-                    if (hexselected != null)
-                    {
-                        hexselected.Selected = true;
-                        hextarget.Selected = false;
-                    }
-                }
-            }
-            WriteLog(moveresult);
-            this.Refresh();
-        }
+       
 
         private void WriteLog(MoveResult moveresult)
         {
