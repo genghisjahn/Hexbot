@@ -28,10 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.txtLog = new System.Windows.Forms.TextBox();
             this.btnPaint = new System.Windows.Forms.Button();
             this.pboxMain = new System.Windows.Forms.PictureBox();
             this.btnGoBot = new System.Windows.Forms.Button();
+            this.timerBot = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pboxMain)).BeginInit();
             this.SuspendLayout();
             // 
@@ -74,6 +76,11 @@
             this.btnGoBot.UseVisualStyleBackColor = true;
             this.btnGoBot.Click += new System.EventHandler(this.btnGoBot_Click);
             // 
+            // timerBot
+            // 
+            this.timerBot.Interval = 1000;
+            this.timerBot.Tick += new System.EventHandler(this.timerBot_Tick);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -99,6 +106,7 @@
         private System.Windows.Forms.Button btnPaint;
         private System.Windows.Forms.PictureBox pboxMain;
         private System.Windows.Forms.Button btnGoBot;
+        private System.Windows.Forms.Timer timerBot;
     }
 }
 

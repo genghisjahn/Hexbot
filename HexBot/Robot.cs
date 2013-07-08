@@ -23,29 +23,40 @@ namespace HexBot
 
         private float toprowY = 0;
         private int serialNumber = 0;
+
+        private List<Hexagon> RemainingMoves = new List<Hexagon>();
+
         private void ReceiveCameraInput(List<Hexagon> hexes)
         {
-            var OrderByPreference = (from h in hexes
+            RemainingMoves = (from h in hexes
                                      orderby h.Center.Y ascending, h.Height descending
                                      select h).ToList();
-            CycleThroughMoves(OrderByPreference);
-            //Attempt to move in order of preference
-            //Until a move is successful 
-            //or all moves are tried, in which case
-            //the bot is stuck.
+            CycleThroughMoves();
+
         }
-        private void CycleThroughMoves(List<Hexagon> hexes)
+
+        public void OnMoveComplete(MoveResult mresult)
+        {
+            if (mresult.MoveResultStatus != MoveResult.eMoveResult.Success)
+            {
+                CycleThroughMoves();
+            }
+        }
+
+        private void CycleThroughMoves()
         {
             HexUtils.eMoveDirection direction;
-            foreach (var hex in hexes)
+            var tryhex = RemainingMoves.FirstOrDefault();
+            if (tryhex != null)
             {
-                direction = GetDirectionOfAdjancentHex(hex);
+                direction = GetDirectionOfAdjancentHex(tryhex);
                 TryMoveEventArgs tmargs = new TryMoveEventArgs();
                 tmargs.Direction = direction;
                 if (this.TryMove != null)
                 {
+                    RemainingMoves.Remove(tryhex);
                     this.TryMove(this, tmargs);
-                }    
+                }  
             }
         }
 
@@ -88,19 +99,32 @@ namespace HexBot
             
         }
 
-
-        public void PowerOn()
+        private void InitiateLookAround()
         {
-            
-            LookAroundEventArgs args =new LookAroundEventArgs();
-            args.Radius=1;
+            LookAroundEventArgs args = new LookAroundEventArgs();
+            args.Radius = 1;
             if (this.LookAround != null)
             {
                 this.LookAround(this, args);
             }
         }
+        public void NudgeBot()
+        {
+            InitiateLookAround();
+        }
+        public void PowerOn()
+        {
+            this.isPowerOn = true;
+            InitiateLookAround();
+        }
+        public void PowerOff()
+        {
+            this.RemainingMoves.Clear();
+            this.isPowerOn = false;
+        }
 
-      
+        public bool isPowerOn { get; private set; }
+
 
         public Robot() { }
         public Robot(int upjump, int downjump, int vision)
@@ -110,13 +134,21 @@ namespace HexBot
 
         public event EventHandler LookAround;
         public event EventHandler TryMove;
-        public void OnLookAround(List<Hexagon> hexes)
+        public void OnLookAroundComplete(List<Hexagon> hexes)
         {
             ReceiveCameraInput(hexes);
         }
-        public void OnTryMove(MoveResult mresult, Hexagon newhex)
+        public void OnTryMoveComplete(MoveResult mresult, Hexagon newhex)
         {
-            var temp = "";
+            if (mresult.MoveResultStatus == MoveResult.eMoveResult.Success)
+            {
+                this.CurrentHexagon = newhex;
+                InitiateLookAround();
+            }
+            else
+            {
+                CycleThroughMoves();
+            }
         }
         
         

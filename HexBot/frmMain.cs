@@ -22,6 +22,7 @@ namespace HexBot
         public frmMain()
         {
             InitializeComponent();
+            hexworld.LogMove  += new EventHandler(OnLogMove);
         }
 
         private void frmMain_Load(object sender, EventArgs e)
@@ -34,6 +35,12 @@ namespace HexBot
             this.Refresh();
         }
 
+        private void OnLogMove(object s, EventArgs e)
+        {
+            LogMoveArgs lmargs = (LogMoveArgs)e;
+            HexWorld hw = (HexWorld)s;
+            WriteLog(lmargs.moveresult);
+        }
         
 
         private void LogHexagons()
@@ -165,15 +172,24 @@ namespace HexBot
 
         private void btnGoBot_Click(object sender, EventArgs e)
         {
-            MoveBot();
+            this.timerBot.Enabled = true;     
         }
         private void MoveBot()
         {
-            hexworld.Robots[0].PowerOn();
-            
-            //MoveResult moveresult = hexworld.TryMove(HexUtils.eMoveDirection.N, 0);
+            if (!hexworld.Robots[0].isPowerOn)
+            {
+                hexworld.Robots[0].PowerOn();
+            }
+            else
+            {
+                hexworld.Robots[0].NudgeBot();
+            }
             this.Refresh();
-            //WriteLog(moveresult);
+            
+        }
+        private void timerBot_Tick(object sender, EventArgs e)
+        {
+            MoveBot();
         }
 
     }

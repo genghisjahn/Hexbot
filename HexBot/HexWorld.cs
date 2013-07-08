@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 using HexBot;
 namespace HexBot
 {
+    public class LogMoveArgs : EventArgs
+    {
+        public MoveResult moveresult { get; set; }     
+    }
+
     public class HexWorld
     {
         #region "Private variables"
@@ -33,6 +38,9 @@ namespace HexBot
         }
         #endregion
 
+
+        public event EventHandler LogMove;
+
         #region "Public Methods"
         public void AddRobot(Robot robot)
         {
@@ -50,7 +58,14 @@ namespace HexBot
         {
             Robot movingbot = (Robot)s;
             TryMoveEventArgs tmargs = (TryMoveEventArgs)e;
+            LogMoveArgs lmargs = new LogMoveArgs();
             MoveResult mresult = this.TryMove(tmargs.Direction, movingbot);
+            movingbot.OnMoveComplete(mresult);
+            lmargs.moveresult = mresult;
+            if (mresult.MoveResultStatus == MoveResult.eMoveResult.Success)
+            {
+                this.LogMove(this, lmargs);
+            }
         }
         private void OnRobotLookAround(object s, EventArgs e)
         {
@@ -70,7 +85,7 @@ namespace HexBot
                              where hx!=null
                              select hx).ToList();
             
-            objRobot.OnLookAround(validhexes);
+            objRobot.OnLookAroundComplete(validhexes);
         }
 
 
