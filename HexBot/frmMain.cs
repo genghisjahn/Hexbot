@@ -40,6 +40,10 @@ namespace HexBot
             LogMoveArgs lmargs = (LogMoveArgs)e;
             HexWorld hw = (HexWorld)s;
             WriteLog(lmargs.moveresult);
+            if (lmargs.moveresult.MoveResultStatus == MoveResult.eMoveResult.Complete)
+            {
+                hexworld.Robots[0].PowerOff();
+            }
         }
         
 

@@ -8,13 +8,14 @@ namespace HexBot
 {
     public class LogMoveArgs : EventArgs
     {
-        public MoveResult moveresult { get; set; }     
+        public MoveResult moveresult { get; set; }
     }
 
     public class HexWorld
     {
         #region "Private variables"
         private Random rand = new Random((int)DateTime.Now.Ticks);
+        private float toprowy;
         #endregion
 
         #region "Public Properties"
@@ -29,13 +30,20 @@ namespace HexBot
         {
             this.WorldName = worldname;
             this.Tiles = tiles;
-
+            SetTopRowY();
         }
         public HexWorld(string worldname)
         {
             this.WorldName = worldname;
             BuildWorld();
+            SetTopRowY();
         }
+        private void SetTopRowY()
+        {
+            toprowy = (from h in Tiles
+                       select h.NE.Y).Min();
+        }
+
         #endregion
 
 
@@ -62,6 +70,9 @@ namespace HexBot
             MoveResult mresult = this.TryMove(tmargs.Direction, movingbot);
             movingbot.OnMoveComplete(mresult);
             lmargs.moveresult = mresult;
+
+
+
             if (mresult.MoveResultStatus == MoveResult.eMoveResult.Success)
             {
                 this.LogMove(this, lmargs);
@@ -82,9 +93,9 @@ namespace HexBot
                 caminput.Add(GetAdjacentHexagon(objRobot.CurrentHexagon, HexUtils.eMoveDirection.NW));
             }
             var validhexes = (from hx in caminput
-                             where hx!=null
-                             select hx).ToList();
-            
+                              where hx != null
+                              select hx).ToList();
+
             objRobot.OnLookAroundComplete(validhexes);
         }
 
@@ -105,9 +116,15 @@ namespace HexBot
             if (targethex != null)
             {
                 result = HexUtils.isMoveAllowed(robot.CurrentHexagon, targethex, robot.UpJump, robot.DownJump);
+
                 if (result.MoveResultStatus == MoveResult.eMoveResult.Success)
                 {
                     robot.SetCurrentHexagon(targethex);
+                    if (targethex.NE.Y == toprowy)
+                    {
+                        result.MoveResultStatus = MoveResult.eMoveResult.Complete;
+                        result.ResultMessage = string.Format("The robot {0} made it across!", robot.SerialNumber.ToString());
+                    }
                 }
             }
             return result;
@@ -128,34 +145,34 @@ namespace HexBot
                     break;
                 case HexUtils.eMoveDirection.NE:
                     result = (from h in this.Tiles
-                     where h.HexSides.Contains(hex.NESide)
-                     && h != hex
-                     select h).FirstOrDefault();
+                              where h.HexSides.Contains(hex.NESide)
+                              && h != hex
+                              select h).FirstOrDefault();
                     break;
                 case HexUtils.eMoveDirection.SE:
                     result = (from h in this.Tiles
-                     where h.HexSides.Contains(hex.SESide)
-                     && h != hex
-                     select h).FirstOrDefault();
+                              where h.HexSides.Contains(hex.SESide)
+                              && h != hex
+                              select h).FirstOrDefault();
                     break;
                 case HexUtils.eMoveDirection.S:
                     result = (from h in this.Tiles
-                     where h.HexSides.Contains(hex.SSide)
-                     && h != hex
-                     select h).FirstOrDefault();
+                              where h.HexSides.Contains(hex.SSide)
+                              && h != hex
+                              select h).FirstOrDefault();
                     break;
                 case HexUtils.eMoveDirection.SW:
                     result = (from h in this.Tiles
-                     where h.HexSides.Contains(hex.SWSide)
-                     && h != hex
-                     select h).FirstOrDefault();
+                              where h.HexSides.Contains(hex.SWSide)
+                              && h != hex
+                              select h).FirstOrDefault();
                     break;
 
                 case HexUtils.eMoveDirection.NW:
                     result = (from h in this.Tiles
-                     where h.HexSides.Contains(hex.NWSide)
-                     && h != hex
-                     select h).FirstOrDefault();
+                              where h.HexSides.Contains(hex.NWSide)
+                              && h != hex
+                              select h).FirstOrDefault();
                     break;
                 default:
                     result = null;

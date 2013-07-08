@@ -14,7 +14,8 @@ namespace HexBot
             TooHigh = 2,
             TooLow = 3,
             NoBorder = 4,
-            DNE = 5
+            DNE = 5,
+            Complete=10
         }
         public eMoveResult MoveResultStatus { get;  set; }
         public string ResultMessage { get;  set; }
