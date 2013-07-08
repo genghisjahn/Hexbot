@@ -25,12 +25,17 @@ namespace HexBot
         private int serialNumber = 0;
 
         private List<Hexagon> RemainingMoves = new List<Hexagon>();
-
+        private List<Hexagon> DeadEndMoves = new List<Hexagon>();
+        private Hexagon previousHex=null;
         private void ReceiveCameraInput(List<Hexagon> hexes)
         {
             RemainingMoves = (from h in hexes
                                      orderby h.Center.Y ascending, h.Height descending
                                      select h).ToList();
+            if (previousHex != null)
+            {
+                RemainingMoves.Remove(previousHex);
+            }
             CycleThroughMoves();
 
         }
@@ -115,7 +120,6 @@ namespace HexBot
         public void PowerOn()
         {
             this.isPowerOn = true;
-            InitiateLookAround();
         }
         public void PowerOff()
         {
@@ -174,9 +178,10 @@ namespace HexBot
 
         public Hexagon CurrentHexagon { get; private set; }
 
-        public void SetCurrentHexagon(Hexagon currenthex)
+        public void SetCurrentHexagon(Hexagon newhex)
         {
-            this.CurrentHexagon = currenthex;
+            previousHex = this.CurrentHexagon;
+            this.CurrentHexagon = newhex;
         }
 
         public Robot(int upjump, int downjump, int vision, float toprowYvalue)

@@ -119,15 +119,12 @@ namespace HexBot
 
         private void btnGoBot_Click(object sender, EventArgs e)
         {
+            hexworld.Robots[0].PowerOn();
             this.timerBot.Enabled = true;     
         }
         private void MoveBot()
         {
-            if (!hexworld.Robots[0].isPowerOn)
-            {
-                hexworld.Robots[0].PowerOn();
-            }
-            else
+            if (hexworld.Robots[0].isPowerOn)
             {
                 hexworld.Robots[0].NudgeBot();
             }
@@ -137,6 +134,11 @@ namespace HexBot
         private void timerBot_Tick(object sender, EventArgs e)
         {
             MoveBot();
+        }
+
+        private void btnPowerOff_Click(object sender, EventArgs e)
+        {
+            hexworld.Robots[0].PowerOff();
         }
 
     }
