@@ -67,7 +67,7 @@
             // 
             // timerBot
             // 
-            this.timerBot.Interval = 1000;
+            this.timerBot.Interval = 250;
             this.timerBot.Tick += new System.EventHandler(this.timerBot_Tick);
             // 
             // btnPowerOff
