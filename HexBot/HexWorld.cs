@@ -48,7 +48,9 @@ namespace HexBot
         }
         private void OnRobotTryMove(object s, EventArgs e)
         {
-            string temp = "";
+            Robot movingbot = (Robot)s;
+            TryMoveEventArgs tmargs = (TryMoveEventArgs)e;
+            MoveResult mresult = this.TryMove(tmargs.Direction, movingbot);
         }
         private void OnRobotLookAround(object s, EventArgs e)
         {

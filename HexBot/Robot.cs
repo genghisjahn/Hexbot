@@ -36,16 +36,19 @@ namespace HexBot
         }
         private void CycleThroughMoves(List<Hexagon> hexes)
         {
-            
             HexUtils.eMoveDirection direction;
             foreach (var hex in hexes)
             {
                 direction = GetDirectionOfAdjancentHex(hex);
                 TryMoveEventArgs tmargs = new TryMoveEventArgs();
                 tmargs.Direction = direction;
-                this.TryMove(this, tmargs);
+                if (this.TryMove != null)
+                {
+                    this.TryMove(this, tmargs);
+                }    
             }
         }
+
         private HexUtils.eMoveDirection GetDirectionOfAdjancentHex(Hexagon hex)
         {
             Hexagon chex = this.CurrentHexagon;
@@ -88,27 +91,35 @@ namespace HexBot
 
         public void PowerOn()
         {
+            
             LookAroundEventArgs args =new LookAroundEventArgs();
             args.Radius=1;
-            this.LookAround(this, args);
+            if (this.LookAround != null)
+            {
+                this.LookAround(this, args);
+            }
         }
+
+      
 
         public Robot() { }
         public Robot(int upjump, int downjump, int vision)
         {
             SetBaseRobot(upjump, downjump, vision);
         }
+
         public event EventHandler LookAround;
+        public event EventHandler TryMove;
         public void OnLookAround(List<Hexagon> hexes)
         {
             ReceiveCameraInput(hexes);
         }
-
-        public event EventHandler TryMove;
-        public void OnTryMove(MoveResult mresult,Hexagon newhex)
+        public void OnTryMove(MoveResult mresult, Hexagon newhex)
         {
             var temp = "";
         }
+        
+        
         public int SerialNumber { get; private set; }
         public void SetSerialNumber(int num)
         {
