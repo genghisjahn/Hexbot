@@ -27,7 +27,7 @@ namespace HexBot
         private List<Hexagon> RemainingMoves = new List<Hexagon>();
         private List<Hexagon> DeadEndMoves = new List<Hexagon>();
         private Hexagon previousHex=null;
-        private void ReceiveCameraInput(List<Hexagon> hexes)
+        private void ProcessInput(List<Hexagon> hexes)
         {
             RemainingMoves = (from h in hexes
                                      orderby h.Center.Y ascending, h.Height descending
@@ -140,7 +140,7 @@ namespace HexBot
         public event EventHandler TryMove;
         public void OnLookAroundComplete(List<Hexagon> hexes)
         {
-            ReceiveCameraInput(hexes);
+            ProcessInput(hexes);
         }
         public void OnTryMoveComplete(MoveResult mresult, Hexagon newhex)
         {
